@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>AnimeFans - Home</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link href="AF blue.jpg" rel="icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="owl.carousel.min.css" rel="stylesheet">
+  <link href="tempusdominus-bootstrap-4.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    #draggedElement {
+      width: 200px;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      cursor: move;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    #cartSection {
+      width: 200px;
+      height: 300px;
+      border: 2px dashed gray;
+      margin-top: 20px;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .cartItem {
+      margin-bottom: 10px;
+    }
+
+    .mangaCover {
+      width: 100%;
+      height: 200px;
+      background-color: #fff;
+      background-image: url('manga-cover.jpg');
+      background-position: center;
+      background-size: cover;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mangaTitle {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .mangaPrice {
+      margin-top: 5px;
+      color: #888;
+    }
+
+    .selectedVolume {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .volumeSelectWrapper {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .cartItem.showVolumeSelect .volumeSelectWrapper {
+      display: block;
+    }
+
+    .cartItem.showVolumeSelect .mangaCover {
+      display: none;
+    }
+
+    .mangaTitle:empty {
+      margin-bottom: 0;
+    }
+  </style>
+  <style>
+    .left-sidebar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 50px;
+      color: black;
+      background-color: #f0f0f0;
+    }
+
+    .account-settings {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+    }
+
+    .account-settings i {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .account-buttons {
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .account-button {
+      padding: 10px;
+      margin: 5px;
+      border: none;
+      cursor: pointer;
+      background-color: transparent;
+    }
+
+    .account-button i {
+      font-size: 22px;
+    }
+  </style>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .stlk7ud {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 400px;
+      background-color: white;
+      justify-content: center;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .kwjevfh {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 20px;
+      width: 60px;
+      z-index: 1;
+    }
+
+    .sbekgjd {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+      height: 450px;
+    }
+
+    .sbekgjd h2 {
+      color: black;
+      margin-bottom: 10px;
+    }
+
+    .sbekgjd p {
+      color: #666;
+    }
+
+    .sutbijyfik {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  </style>
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .grid-item {
+      border: 1px solid #000000;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .grid-item img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .grid-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  <style>
+    /* Viewer Overlay */
+    .image-viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .image-viewer.active {
+      display: flex;
+    }
+
+    .image-viewer img {
+      max-width: 90vw;
+      max-height: 90vh;
+      cursor: grab;
+      transition: transform 0.15s ease;
+    }
+
+    /* Controls */
+    .viewer-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px;
+    }
+
+    .viewer-btn.prev {
+      left: 20px;
+    }
+
+    .viewer-btn.next {
+      right: 20px;
+    }
+
+    .viewer-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 36px;
+      cursor: pointer;
+      color: white;
+    }
+
+    /* Mobile friendly */
+    @media (max-width: 600px) {
+      .viewer-btn {
+        font-size: 30px;
+      }
+    }
+  </style>
+  <style>
+    .price-cart-wrapper .addToCartBtn {
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .price-cart-wrapper:hover .addToCartBtn {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sticky-top">
+    <div class="container-fluid position-relative nav-bar p-0 ">
+      <div class=" position-relative " style="z-index: 9;">
+        <nav id="nav" class="navbar navbar-expand-lg bg-light navbar-light">
+          <a href="index.html" id="cf" class="navbar-brand d-flex align-items-center">
+            <img id="one" class="bottom" src="change-light-anime-fanatics.jpg" height="38" data-atf="1" data-frt="0">
+            <img id="two" class="top" src="light dark anime fanatics.jpg" height="38" data-atf="1" data-frt="0">
+          </a>
+          <button type="button" class="btn btn-lg btn-light" data-toggle="collapse" data-target="#navbarCollapse"><i
+              class="fa fa-bars"></i></button>
+          <div class="collapse navbar-collapse justify-content-between " id="navbarCollapse">
+            <div class="navbar-nav ml-auto ">
+              <ul class=" ul d-flex justify-content-start">
+                <li>
+                  <div id="arch" class="search-bar justify-content-center mr-5">
+                    <form id="rch" class="search-form d-flex align-items-center" method="POST" action="#">
+                      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                      <button type="submit" title="Search"><i id="icon"
+                          class="search-icon-dark fa fa-search"></i></button>
+                    </form>
+                  </div>
+                </li>
+                <li><a class="btn btn-lg  active btn-light mr-1" title="Home" href="index.html">
+                    <i class="fa fa-adjust fa-home"></i> Home
+                  </a></li>
+                <li><a class="btn btn-lg btn-light mr-1" title="Manga" href="#manga"><i
+                      class="fa fa-adjust fa-book-open"></i> Manga</a></li>
+                <li><a class="btn btn-lg  btn-light mr-1" title="Cosplay Dresses" href="#cosplay"><i
+                      class="fa fa-adjust fa-user-astronaut"></i> Cosplay</a></li>
+                <li><a class="btn btn-lg  btn-light mr-1" title="Anime Toys" href="#toys"><i
+                      class="fa fa-adjust fa-dragon"></i> Toys</a></li>
+                <li><a id="cart-handle" class="btn btn-lg btn-light mr-1" title="cart"><i
+                      class="fa fa-adjust fa-cart-plus"></i> Cart</a></li>
+                <li><a class="btn btn-lg  btn-light mr-1" title="About us" href="about.html"><i
+                      class="fa fa-adjust fa-info"></i> About Us</a></li>
+                <!--<li><a class="btn btn-lg  btn-light nav-item dropdown dropdown-toggle mr-1" title="List"
+                    data-toggle="dropdown" href="#"><i class="fa fa-adjust fa fa-list "></i></a>
+                  <div class="dropdown-menu dropdown-menu-right ">
+                    <a href="/htms/blog.html" class="dropdown-item "><i class="fa fa-blog"></i> Blog</a>
+                    <a href="/htms/single.html" class="dropdown-item"><i class="fa fa-file-prescription"></i>
+                      Details</a>
+                    <a href="/htms/destination.html" class="dropdown-item"><i class="fa fa-place-of-worship"></i>
+                      Destinations</a>
+                    <a href="/htms/testimonial.html" class="dropdown-item"><i
+                        class="fa fa-list-alt "></i>Testimonial</a>
+                  </div>
+                </li>-->
+              </ul>
+              <!--<button onclick="myFunction()" class="btn btn-lg btn-light"><i class="fa fa-adjust" title="theme"></i>
+                Theme</button>-->
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <div id="cart-bar" class="bg-color" ondrop="dropElement(event)" ondragover="allowDrop(event)">
+    <h5 class="text-black text-center mt-2">Your Cart</h5>
+    <ul id="cartItems"></ul>
+    <div>Total: $<span id="cartTotal">0.00</span></div>
+  </div>
+  <div id="background" class="container-fluid bg-color pt-3 d-lg-block">
+    <div class="container">
+      <div class="row"></div>
+    </div>
+
+    <div id="imageViewer" class="image-viewer" role="dialog" aria-modal="true">
+      <span class="viewer-close" aria-label="Close">&times;</span>
+      <span class="viewer-btn prev" aria-label="Previous">&#10094;</span>
+      <img id="viewerImg" alt="">
+      <span class="viewer-btn next" aria-label="Next">&#10095;</span>
+    </div>
+
+    <img src="demon-slayer-667x1000.webp" data-viewer alt="Photo 1" width="150">
+    <img src="aki-hawa-f-cod1.webp" data-viewer alt="Photo 2" width="150">
+    <img src="attack-on-titan.webp" data-viewer alt="Photo 3" width="150">
+    <img src="baljinnyam-munkhgerel-j38PbmK1Q-E-unsplash.jpg" data-viewer alt="Photo 4" width="200">
+    <img src="call-of-the-night-667x1000.webp" data-viewer alt="Photo 5" width="150">
+    <img src="chainsaw man.jpg" data-viewer alt="Photo 6" width="150">
+    <img src="denji-f-cod1.webp" data-viewer alt="Photo 7" width="150">
+    <img src="charles-chen-UhB9XpPzmZc-unsplash.jpg" data-viewer alt="Photo 8" width="200">
+    <img src="Haikyuu-667x1000.webp" data-viewer alt="Photo 9" width="150">
+
+    <!--<div class="container-fluid mt-4">
+      <div class="container">
+        <h5 class="text-primary text-uppercase text-right">GOODS</h5>
+        <div class="carousel-wrapper mt-4">
+          <div id="image-container" class="carousel-track owl-carousel testimonial-carousel">
+            <div class="service-item">
+              <a href="">
+                <img src="miika-laaksonen-unsplash-readingmanga.jpg" alt="Image 1">
+              </a>
+            </div>
+            <div class="service-item">
+              <a href="">
+                <img src="william-wallace-XjnQ9FhRHvs-unsplash.jpg" alt="Image 3">
+              </a>
+            </div>
+            <div class="service-item">
+              <a href="">
+                <img src="nathalia-segato-unsplash-cosplay.jpg" alt="Image 2">
+              </a>
+            </div>
+
+            <div class="service-item">
+              <a href="">
+                <img src="denji-f-cod1.webp" alt="Image 3">
+              </a>
+            </div>
+            <div class="service-item">
+              <a href="">
+                <img src="punto-fotografico-_cZwKCQP98Q-unsplash.jpg" alt="Image 3">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="text-right mt-3">
+          <button class="carousel-prev btn btn-lg btn-light">&#8249;</button>
+          <button class="carousel-next btn btn-lg btn-light">&#8250;</button>
+        </div>
+      </div>
+    </div>-->
+    <div id="manga" class="container-fluid py-5">
+      <div class="container pt-5 pb-3">
+        <div class=" mb-3 pb-3">
+          <h5 class="text-primary text-uppercase " style="letter-spacing: 0px;">Manga</h5>
+        </div>
+        <div class="row">
+          <div id="draggedElement1" class="col-lg-3 col-md-6 mb-4 draggedElement" draggable="true"
+            ondragstart="dragElement(event)">
+            <div class="package-item bg-white mb-2">
+              <a><img class="img-thumbnail" src="chainsaw man.jpg"></a>
+              <div class="p-4 bg-color position-relative">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga1">Chainsaw
+                  Man</a>
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$24.66</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="Chainsaw Man" data-price="24.66">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+                <!--<div class="mangaPrice">$24.66</div> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a><img class="img-thumbnail" src="Monthly-Girls-Nozaki-kun-vol-1.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item1">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga2">Monthly
+                  Girls Nozaki -kun</a>
+                <!--<div class="mangaPrice">$59.34</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$59.34</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="Monthly Girls Nozaki -kun"
+                    data-price="59.34">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a><img class="img-thumbnail" src="jujutsu-kaisen-vol-1.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item2">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga3">Jujutsu
+                  Kaisen </a>
+                <!--<div class="mangaPrice">$23.47</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$23.47</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="Jujutsu Kaisen" data-price="23.47">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a><img class="img-thumbnail" src="Tokyo-revengers-vol-1.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item3">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga4">Tokyo
+                  Revengers</a>
+                <!--<div class="mangaPrice">$33.76</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$33.76</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="Tokyo Revengers" data-price="33.76">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href="/htms/item.html"><img class="img-thumbnail" src="one-piece-vol-1.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item4">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga5">One
+                  Piece</a>
+                <!--<div class="mangaPrice">$48.53</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$48.53</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="One Piece" data-price="48.53">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="my-hero-academia.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item5">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga6">My hero
+                  academia</a>
+                <!--<div class="mangaPrice">$85.65</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$85.65</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="My hero academia" data-price="85.65">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="kaiju-no-8.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item6">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga7">kaiju no
+                  8</a>
+                <!--<div class="mangaPrice">$48.65</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$48.65</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="kaiju no 8" data-price="48.65">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="spy-family-vol-1.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item7">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga8">Spy
+                  Family</a>
+                <!--<div class="mangaPrice">$180.51</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$180.51</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="Spy Family" data-price="180.51">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="mashle-manga-664x1000.jpg.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item8">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton"
+                  data-manga-id="manga9">mashle</a>
+                <!--<div class="mangaPrice">$45.99</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$45.99</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="mashle" data-price="45.99">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="the-elusive-samurai-666x1000.jpg.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item9">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga10">the
+                  elusive samurai</a>
+                <!--<div class="mangaPrice">$89.45</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$89.45</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="the elusive samurai" data-price="89.45">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="undead-unluck-manga-664x1000.jpg.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item10">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga11">undead
+                  unluck</a>
+                <!--<div class="mangaPrice">$85.95</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$85.95</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="undead unluck" data-price="85.95">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="to-your-eternity-yoshitoki-oima-700x1000.jpg.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item11">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga12">to your
+                  eternity</a>
+                <!--<div class="mangaPrice">$45.68</div>-->
+                <div class="price-cart-wrapper"
+                  style="display: flex; justify-content: space-between; align-items: center;">
+                  <div class="mangaPrice">$45.68</div>
+                  <button class="addToCartBtn btn btn-lg btn-light" data-title="to your eternity" data-price="45.68">
+                    <i class="fa fa-cart-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="one-punch-man-667x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item12">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga13">one
+                  punch man</a>
+                <div class="mangaPrice">$48.68</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="doc-stone-645x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item13">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga14">dr.
+                  Stone</a>
+                <div class="mangaPrice">$78.98</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="demon-slayer-667x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item14">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga15">demon
+                  Slayer</a>
+                <div class="mangaPrice">$59.68</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="the-promised-neverland-667x1000.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item15">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga16">the
+                  promised neverland</a>
+                <div class="mangaPrice">$45.55</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="hells-paradise-697x1000.jpg"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item16">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga17">hells
+                  paradise</a>
+                <div class="mangaPrice">$46.45</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="call-of-the-night-667x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item17">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga18">call of
+                  the night</a>
+                <div class="mangaPrice">$59.68</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="tokyo-ghoul-697x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item18">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga19">tokyo
+                  ghoul</a>
+                <div class="mangaPrice">$52.65</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="Haikyuu-667x1000.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item19">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton"
+                  data-manga-id="manga20">haikyuu</a>
+                <div class="mangaPrice">$59.68</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="the-limited-zone.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item20">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga21">the
+                  limited zone</a>
+                <div class="mangaPrice">$55.55</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="the-remarried-empress.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item21">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga22">the
+                  remarried empress</a>
+                <div class="mangaPrice">$59.68</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="killing-stalking-deluxe.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item22">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga23">killing
+                  stalking</a>
+                <div class="mangaPrice">$29.63</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="package-item bg-white mb-2">
+              <a href=""><img class="img-thumbnail" src="attack-on-titan.webp"></a>
+              <div class="p-4 bg-color itm position-relative" draggable="true" ondragstart="drag(event)" id="item23">
+                <a class="h5 text-decoration-none text-black mangaTitle showMangaButton" data-manga-id="manga24">attack
+                  on titan</a>
+                <div class="mangaPrice">$68.25</div>
+              </div>
+            </div>
+          </div>
+          <div id="overlay" class="overlay">
+            <div class="info-box">
+              <h2 id="mangaTitle"></h2>
+              <img id="mangaImage" src="" alt="Manga Cover" width="25%">
+              <p id="mangaDetails"></p>
+              <div id="volumeList">
+                <h3>Available Volumes:</h3>
+                <ul id="volumeItems"></ul>
+              </div>
+              <button id="closeBoxButton">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<div id="cosplay" class="container-fluid py-5">
+      <div class="container pt-5 pb-3">
+        <div class="text-left mb-3 pb-3">
+          <h5 class="text-primary text-uppercase " style="letter-spacing: 0px;">Cosplay Dresses</h5>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="/lukas-denier-ED6-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+    <div id="cosplay" class="container-fluid py-5">
+      <div class="container pt-5 pb-3">
+        <div class="text-left mb-3 pb-3">
+          <h5 class="text-primary text-uppercase " style="letter-spacing: 0px;">Cosplay Dresses</h5>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="nur-taufik-zamari-aglMx3nPalw-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="qu-nh-le-m-nh-yKPohg3jTJM-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="h-ng-nguy-n-q__uJ3QdD3g-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="le-anh-_LcwBLXhe60-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="dominic-kurniawan-suryaputra-cC_mwVrPTo0-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="punto-fotografico-ryFTpdm_HnE-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="baljinnyam-munkhgerel-j38PbmK1Q-E-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="h-ng-nguy-n-NcMryhlLvsU-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="destination-item position-relative overflow-hidden mb-2">
+              <img class="img-fluid" src="charles-chen-UhB9XpPzmZc-unsplash.jpg" alt="">
+              <a class="destination-overlay text-white text-decoration-none" href="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="toys" class="container-fluid py-5">
+      <section id="services" class="services section-bg py-5">
+        <div class="container-sm" data-aos="fade-up">
+          <div class=" mb-3 pb-3">
+            <h5 class="text-primary text-uppercase " style="letter-spacing: 0px;">Figurines and Toys</h5>
+          </div>
+          <div id="stage" class="row mb-4">
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">L sitting down</h4>
+                <a href=""><img src="L-f-cod1.jpg" class="bg-bc"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Aki Hayakawa</h4>
+                <a href=""><img src="aki-hawa-f-cod1.webp" class=" " height="225"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Denji pose</h4>
+                <a href=""><img src="denji-f-cod1.webp" class=" " height="320"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Goku sleeping</h4>
+                <a href=""><img src="scott-gummerson-unsplash-rest-assured(goku-sleepping).jpg" class=" "
+                    height="300"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Nami pose</h4>
+                <a href=""><img src="nami-pose.avif" class="bg-bc" width="225"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Luffy's punch</h4>
+                <a href=""><img src="one-piece punch.avif" class=" " height="335"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Shoto todoroki</h4>
+                <a href=""><img src="shoto-todoroki-pose.avif" class=" " height="180"></a>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
+              data-aos-delay="200">
+              <div class="icon-box bg-light">
+                <div class="icon"><i class=" "></i></div>
+                <h4 class="text-black">Zenitsu's sword</h4>
+                <a href=""><img src="Zenitsu Agatsuma pose.avif" class=" " height="380"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="stlk7ud" id="section">
+      <div class="sbekgjd" id="info-box">
+        <h2></h2>
+        <p></p>
+      </div>
+    </div>
+    <div class="sutbijyfik"></div>
+
+    <div class="left-sidebar">
+      <div class="account-settings active btn-light">
+        <i class="fas fa-user"></i>
+        <div class="account-buttons">
+          <div class="account-button btn-light" id="icon1" data-title="Account" data-info="User account information"><i
+              class="fas fa-user"></i></div>
+          <div class="account-button btn-light" id="icon2" data-title="Preferences"
+            data-info="User preferences settings"><i class="fas fa-cog"></i></div>
+          <div class="account-button btn-light" id="icon3" data-title="Settings"
+            data-info="General application settings"><i class="fas fa-wrench"></i> </div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+    </div>
+    <div class="px-auto ml-5">
+      <div class="mb-3">
+        <h5 class="text-black" style="letter-spacing: 1px;">Follow Us </h5>
+        <div class="d-flex justify-content-start text-black">
+          <a class="btn btn-lg btn-outline-light mr-2" href="https://x.com/animefanatics69"><i
+              class="fab fa-twitter"></i></a>
+          <a class="btn btn-lg btn-outline-light mr-2" href="https://www.facebook.com/share/17wsgnHmbr/"><i
+              class="fab fa-facebook-f"></i></a>
+          <a class="btn btn-lg btn-outline-light mr-2"
+            href="https://www.linkedin.com/in/anime-fanatics-9a37173a0?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i
+              class="fab fa-linkedin-in"></i></a>
+          <a class="btn btn-lg btn-outline-light"
+            href="https://www.instagram.com/animefanatics8?igsh=MXdwdGRhMHR0dmFyaQ=="><i
+              class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="container-md bg-dark text-white border-top py-1 px-sm-3 px-md-5"
+      style="border-color: rgba(256, 256, 256, .1) !important;">
+      <div class="row">
+        <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
+          <p class="m-0 text-white-50">Copyright &copy; <a href="#">fknWebsite</a>. All Rights Reserved.</a>
+          </p>
+        </div>
+        <div class="col-lg-6 text-center text-md-right">
+          <p class="m-0 text-white-50">Designed by <a href=" ">notMeObviously</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#" class="btn btn-outline-dark px-0 back-to-top" style="display: inline;">
+    <i class="fa fa-angle-double-up"></i>
+  </a>
+  <script>
+    const cartBar = document.getElementById('cart-bar');
+    const cartHandle = document.getElementById('cart-handle');
+    const mainContent = document.querySelector('main');
+
+    function toggleCartBar() {
+      cartBar.classList.toggle('cart-open');
+      mainContent.classList.toggle('cart-open');
+    }
+    cartHandle.addEventListener('click', toggleCartBar);
+    function drag(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      var itemId = event.dataTransfer.getData("text/plain");
+      var item = document.getElementById(itemId);
+      var cart = document.getElementById("cart-bar");
+      const clone = item.cloneNode(true);
+      cart.appendChild(clone);
+    }
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+    var cart = document.getElementById("cart-bar");
+    cart.addEventListener("drop", drop);
+    cart.addEventListener("dragover", allowDrop);
+    var items = document.getElementsByClassName("item");
+    for (var i = 0; i < items.length; i++) {
+      items[i].addEventListener("dragstart", drag);
+    }
+    function dragElement(event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    }
+    function dropElement(event) {
+      event.preventDefault();
+      const draggedElementId = event.dataTransfer.getData('text/plain');
+      const draggedElement = document.getElementById(draggedElementId);
+      const clonedElement = draggedElement.cloneNode(true);
+      clonedElement.removeAttribute('id');
+      const selectedVolume = document.createElement('div');
+      selectedVolume.classList.add('selectedVolume');
+      const volumeSelect = clonedElement.querySelector('select');
+      selectedVolume.textContent = 'Volume: ' + volumeSelect.value;
+      const cartItem = document.createElement('div');
+      cartItem.classList.add('cartItem');
+      cartItem.appendChild(selectedVolume);
+      cartItem.appendChild(clonedElement);
+      document.getElementById('cart-bar').appendChild(cartItem);
+      if (event.target === document.getElementById('cart-bar')) {
+        cartItem.classList.add('showVolumeSelect');
+      }
+    }
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+    function updatePrice(selectedVolume) {
+      const clonedElement = document.querySelector('#cartSection > div:last-child > div:last-child');
+      updatePriceElement(clonedElement, selectedVolume);
+    }
+    function updatePriceElement(element, selectedVolume) {
+      const priceElement = element.querySelector('.mangaPrice');
+      let price = getPrice(selectedVolume);
+      priceElement.textContent = '$' + price.toFixed(2);
+    }
+    function getPrice(selectedVolume) {
+      const prices = {
+        '1': 9.99,
+        '2': 12.99,
+        '3': 14.99,
+      };
+      return prices[selectedVolume] || 9.99;
+    } 
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const accountSettingsButton = document.querySelector(".account-settings i");
+      const accountButtons = document.querySelector(".account-buttons");
+      let isDropdownVisible = false;
+
+      accountSettingsButton.addEventListener("click", function () {
+        if (isDropdownVisible) {
+          accountButtons.style.opacity = "0";
+          accountButtons.style.visibility = "hidden";
+        } else {
+          accountButtons.style.opacity = "1";
+          accountButtons.style.visibility = "visible";
+        }
+        isDropdownVisible = !isDropdownVisible;
+      });
+    }); 
+  </script>
+  <script>
+    const showMangaButtons = document.querySelectorAll('.showMangaButton');
+    const closeBoxButton = document.getElementById('closeBoxButton');
+    const overlay = document.getElementById('overlay');
+    const mangaTitle = document.getElementById('mangaTitle');
+    const mangaImage = document.getElementById('mangaImage');
+    const mangaDetails = document.getElementById('mangaDetails');
+    const volumeList = document.getElementById('volumeItems');
+
+    const mangaInfo = {
+      manga1: {
+        title: 'Chainsaw Man',
+        imageSrc: 'chainsaw man.jpg',
+        details: 'Chainsaw Man is a Japanese manga series written and illustrated by Tatsuki Fujimoto. Its first arc was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from December 2018 to December 2020; its second arc began serialization in Shueisha\'s Shōnen Jump+ app and website in July 2022.',
+        volumes: ['Manga 1 Volume 1', 'Manga 1 Volume 2']
+      },
+      manga2: {
+        title: 'Monthly Girls Nozaki -kun',
+        imageSrc: 'Monthly-Girls-Nozaki-kun-vol-1.jpg',
+        details: 'Monthly Girls Nozaki-kun is a Japanese four-panel manga series written and illustrated by Izumi Tsubaki. The chapters are serialized online in Gangan Online and have been published in tankōbon volumes by Square Enix. An anime adaptation produced by Doga Kobo aired from July to September 2014.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga3: {
+        title: 'Jujutsu Kaisen',
+        imageSrc: 'jujutsu-kaisen-vol-1.jpg',
+        details: 'Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from March 2018 to September 2024, with its chapters collected in 30 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga4: {
+        title: 'Tokyo Revengers',
+        imageSrc: 'Tokyo-revengers-vol-1.jpg',
+        details: 'Tokyo Revengers is a Japanese manga series written and illustrated by Ken Wakui. It was serialized in Kodansha\'s shōnen manga magazine Weekly Shōnen Magazine from March 2017 to November 2022, with its chapters collected in 31 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga5: {
+        title: 'One Piece',
+        imageSrc: 'one-piece-vol-1.jpg',
+        details: 'One Piece is a Japanese manga series written and illustrated by Eiichiro Oda. It follows the adventures of Monkey D. Luffy and his crew, the Straw Hat Pirates, as he explores the Grand Line in search of the mythical treasure known as the "One Piece" to become the next King of the Pirates.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga6: {
+        title: 'My hero academia',
+        imageSrc: 'my-hero-academia.webp',
+        details: 'My Hero Academia is a Japanese manga series written and illustrated by Kōhei Horikoshi. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from July 2014 to August 2024, with its chapters collected in 42 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga7: {
+        title: 'kaiju no 8',
+        imageSrc: 'kaiju-no-8.webp',
+        details: 'Kaiju No. 8, also known in English as Monster #8, is a Japanese web manga series written and illustrated by Naoya Matsumoto. It was serialized on Shueisha\'s Shōnen Jump+ app and website from July 2020 to July 2025, with its chapters collected in 16 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga8: {
+        title: 'Spy Family',
+        imageSrc: 'spy-family-vol-1.jpg',
+        details: 'Spy × Family is a Japanese web manga series written and illustrated by Tatsuya Endo. The story follows Loid Forger, an enigmatic spy who has to "build a family" to execute a mission, not realizing that his adopted daughter is a telepath, and the woman he agrees to marry is a skilled assassin.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga9: {
+        title: 'Mashle',
+        imageSrc: 'mashle-manga-664x1000.jpg.webp',
+        details: 'Mashle: Magic and Muscles is a Japanese manga series written and illustrated by Hajime Kōmoto. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from January 2020 to July 2023, with its chapters collected in 18 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga10: {
+        title: 'The elusive samurai',
+        imageSrc: 'the-elusive-samurai-666x1000.jpg.webp',
+        details: 'The Elusive Samurai is a Japanese manga series written and illustrated by Yusei Matsui. It has been serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump since January 2021, with its chapters collected in 23 tankōbon volumes as of December 2025.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga11: {
+        title: 'Undead unluck',
+        imageSrc: 'undead-unluck-manga-664x1000.jpg.webp',
+        details: 'Undead Unluck is a Japanese manga series written and illustrated by Yoshifumi Tozuka. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from January 2020 to January 2025, with its chapters collected in 27 tankōbon volumes. The series is licensed for English release in North America by Viz Media.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga12: {
+        title: 'To your eternity',
+        imageSrc: 'to-your-eternity-yoshitoki-oima-700x1000.jpg.webp',
+        details: 'To Your Eternity is a Japanese manga series written and illustrated by Yoshitoki Ōima. It was serialized in Kodansha\'s shōnen manga magazine Weekly Shōnen Magazine from November 2016 to June 2025, with its chapters collected in 25 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga13: {
+        title: 'one punch man',
+        imageSrc: 'one-punch-man-667x1000.webp',
+        details: 'One-Punch Man is a Japanese manga series created by One, originally released as a webcomic in early 2009. It tells the story of Saitama, an independent superhero who, having trained to the point that he can defeat any opponent with a single punch, grows deeply bored from a lack of challenge.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga14: {
+        title: 'Dr. Stone',
+        imageSrc: 'doc-stone-645x1000.webp',
+        details: 'Dr. Stone is a Japanese manga series written by Riichiro Inagaki and illustrated by the South Korean artist Boichi. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from March 2017 to March 2022, with its chapters collected in 27 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga15: {
+        title: 'Demon Slayer',
+        imageSrc: 'demon-slayer-667x1000.webp',
+        details: 'Demon Slayer: Kimetsu no Yaiba is a Japanese manga series written and illustrated by Koyoharu Gotouge. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from February 2016 to May 2020, with its chapters collected in 23 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga16: {
+        title: 'The Promised Neverland',
+        imageSrc: 'the-promised-neverland-667x1000.jpg',
+        details: 'The Promised Neverland is a Japanese manga series written by Kaiu Shirai and illustrated by Posuka Demizu. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from August 2016 to June 2020, with its chapters collected in 20 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga17: {
+        title: 'hells paradise',
+        imageSrc: 'hells-paradise-697x1000.jpg',
+        details: 'Hell\'s Paradise: Jigokuraku is a Japanese web manga series written and illustrated by Yuji Kaku. It was serialized weekly for free on Shueisha\'s Shōnen Jump+ app and website from January 2018 to January 2021, with its chapters collected in 13 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga18: {
+        title: 'call of the night',
+        imageSrc: 'call-of-the-night-667x1000.webp',
+        details: 'Call of the Night is a Japanese manga series written and illustrated by Kotoyama. It was serialized in Shogakukan\'s shōnen manga magazine Weekly Shōnen Sunday from August 2019 to January 2024. In North America, the manga is licensed for English release by Viz Media.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga19: {
+        title: 'tokyo ghoul',
+        imageSrc: 'tokyo-ghoul-697x1000.webp',
+        details: 'Tokyo Ghoul is a Japanese dark fantasy manga series written and illustrated by Sui Ishida. It was serialized in Shueisha\'s seinen manga magazine Weekly Young Jump from September 2011 to September 2014, with its chapters collected in 14 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga20: {
+        title: 'haikyuu',
+        imageSrc: 'Haikyuu-667x1000.webp',
+        details: 'Haikyu!! is a Japanese manga series written and illustrated by Haruichi Furudate. It was serialized in Shueisha\'s shōnen manga magazine Weekly Shōnen Jump from February 2012 to July 2020, with its chapters collected in 45 tankōbon volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga21: {
+        title: 'the limited zone',
+        imageSrc: 'the-limited-zone.webp',
+        details: 'The Liminal Zone is a horror manga series by the acclaimed master of horror, Junji Ito, published in English by VIZ Media in 2022, featuring several unsettling, standalone tales like "Weeping Woman" and stories involving the mysterious Hikizuri siblings, exploring themes of death, the afterlife, and strange supernatural phenomena within liminal spaces, available in print and digital formats. ',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga22: {
+        title: 'The remarried empress',
+        imageSrc: 'the-remarried-empress.webp',
+        details: 'The Remarried Empress is a South Korean web novel series written by Alphatart. It was serialized on Naver Corporation\'s web novel platform Naver Web Novel from November 2018 to March 2020, with its individual chapters collected into eight volumes.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga23: {
+        title: 'killing stalking',
+        imageSrc: 'killing-stalking-deluxe.webp',
+        details: 'Killing Stalking is a South Korean manhwa written and illustrated by Koogi. It was published online in Korean and English by Lezhin Comics and won the ₩100,000,000 Grand Prize Award at the Second Lezhin World Comics Contest. The series has been licensed in English in print format by Seven Seas Entertainment.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      },
+      manga24: {
+        title: 'attack on titan',
+        imageSrc: 'attack-on-titan.webp',
+        details: 'Attack on Titan is a Japanese manga series written and illustrated by Hajime Isayama. Set in a world where humanity is forced to live in cities surrounded by three enormous walls that protect them from gigantic man-eating humanoids referred to as Titans, the story follows Eren Yeager, an adolescent boy who vows to exterminate the Titans after they bring about the destruction of his hometown and the death of his mother.',
+        volumes: ['Manga 2 Volume 1', 'Manga 2 Volume 2']
+      }
+    };
+
+    showMangaButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const mangaId = button.getAttribute('data-manga-id');
+        const selectedManga = mangaInfo[mangaId];
+
+        mangaTitle.textContent = selectedManga.title;
+        mangaImage.src = selectedManga.imageSrc;
+        mangaDetails.textContent = selectedManga.details;
+
+        volumeList.innerHTML = '';
+
+        selectedManga.volumes.forEach(volume => {
+          const volumeItem = document.createElement('li');
+          volumeItem.textContent = volume;
+          volumeList.appendChild(volumeItem);
+        });
+
+        overlay.style.display = 'flex';
+      });
+    });
+
+    closeBoxButton.addEventListener('click', () => {
+      overlay.style.display = 'none';
+    });
+  </script>
+  <script>
+    const icons = document.querySelectorAll('.account-button');
+    const section = document.getElementById('section');
+    const infoBox = document.getElementById('info-box');
+
+    let activeIcon = null;
+
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        const title = icon.getAttribute('data-title');
+        const info = icon.getAttribute('data-info');
+        if (activeIcon === icon) {
+          section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        } else {
+          infoBox.querySelector('h2').textContent = title;
+          infoBox.querySelector('p').textContent = info;
+          section.style.display = 'block';
+          activeIcon = icon;
+        }
+        if (section.style.display === 'block') {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    document.addEventListener('click', event => {
+      if (!section.contains(event.target) && !Array.from(icons).some(icon => icon.contains(event.target))) {
+        section.style.display = 'none';
+        activeIcon = null;
+      }
+    });  
+  </script>
+  <script>
+    (() => {
+      const viewer = document.getElementById("imageViewer");
+      const img = document.getElementById("viewerImg");
+      const images = () => [...document.querySelectorAll("img[data-viewer]")];
+      let index = 0;
+      let scale = 1;
+      let startX = 0;
+
+      function open(i) {
+        index = i;
+        scale = 1;
+        img.style.transform = "scale(1)";
+        img.src = images()[index].src;
+        img.alt = images()[index].alt || "";
+        viewer.classList.add("active");
+        document.body.style.overflow = "hidden";
+        img.focus();
+      }
+
+      function close() {
+        viewer.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      function next() {
+        open((index + 1) % images().length);
+      }
+
+      function prev() {
+        open((index - 1 + images().length) % images().length);
+      }
+
+      // Image click binding (auto)
+      document.addEventListener("click", e => {
+        const imgs = images();
+        const i = imgs.indexOf(e.target);
+        if (i !== -1) open(i);
+      });
+
+      // Controls
+      viewer.querySelector(".viewer-close").onclick = close;
+      viewer.querySelector(".next").onclick = next;
+      viewer.querySelector(".prev").onclick = prev;
+
+      viewer.addEventListener("click", e => {
+        if (e.target === viewer) close();
+      });
+
+      // Keyboard
+      document.addEventListener("keydown", e => {
+        if (!viewer.classList.contains("active")) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowRight") next();
+        if (e.key === "ArrowLeft") prev();
+      });
+
+      // Zoom (mouse wheel)
+      img.addEventListener("wheel", e => {
+        e.preventDefault();
+        scale += e.deltaY * -0.001;
+        scale = Math.min(Math.max(1, scale), 3);
+        img.style.transform = `scale(${scale})`;
+      });
+
+      // Swipe (mobile)
+      img.addEventListener("touchstart", e => {
+        startX = e.touches[0].clientX;
+      });
+
+      img.addEventListener("touchend", e => {
+        const endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) next();
+        if (endX - startX > 50) prev();
+      });
+
+    })();
+  </script>
+  <script>
+    // Select all Add to Cart buttons
+    const buttons = document.querySelectorAll('.addToCartBtn');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    let total = 0;
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const title = button.getAttribute('data-title');
+        const price = parseFloat(button.getAttribute('data-price'));
+
+        // Create new list item in the cart
+        const li = document.createElement('li');
+        li.className = 'cart-item d-flex justify-content-between align-items-center mb-1';
+
+        li.innerHTML = `
+      <span>${title} - $${price.toFixed(2)}</span>
+      <button class="btn btn-lg btn-light remove-btn">x</button>
+    `;
+
+        // Add click event to remove button
+        li.querySelector('.remove-btn').addEventListener('click', () => {
+          // Remove this item from the cart
+          cartItems.removeChild(li);
+          // Update total
+          total -= price;
+          if (total < 0) total = 0; // safety check
+          cartTotal.textContent = total.toFixed(2);
+        });
+
+        // Append the item to the cart
+        cartItems.appendChild(li);
+
+        // Update total
+        total += price;
+        cartTotal.textContent = total.toFixed(2);
+      });
+    });
+
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/lib/easing/easing.min.js"></script>
+  <script src="owl.carousel.min.js"></script>
+  <script src="/assets/lib/tempusdominus/js/moment.min.js"></script>
+  <script src="/assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+  <script src="/assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <script src="/assets/mail/jqBootstrapValidation.min.js"></script>
+  <script src="/assets/mail/contact.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
